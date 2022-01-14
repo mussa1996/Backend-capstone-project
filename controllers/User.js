@@ -9,11 +9,11 @@ exports.createUser = async(req,res)=>{
     }) 
     try {
        const data = await user.save()
-       const token = await user.generateAuthToken()
+    //    const token = await user.generateAuthToken()
        res.send({
            message:"created successfully",
            user: data,
-           token:token
+        //    token:token
        })
     } catch (error) {
         res.status(400).send(error.message)
@@ -26,7 +26,7 @@ exports.loginUser = async(req,res)=>{
        const user = await User.findByCredentials(req.body.email, req.body.password)
        const token = await user.generateAuthToken()
 
-       res.send({user, token})
+       res.send({token})
    } catch (error) {
        res.status(404).send({error:"invalid Email or password"})
    }

@@ -7,8 +7,8 @@ exports.postArticle =async(req,res,next) =>{
                     title:req.body.title,
                     summary:req.body.summary,
                     picture:req.file.filename,
-                    content:req.body.content
-                    // owner:req.user._id
+                    contents:req.body.contents,
+                    owner:req.user._id
                 })
                  await article.save().then((item)=>{
                     res.status(200).send({
@@ -55,16 +55,19 @@ exports.getArticle=async(req,res,next)=>{
         res.status(500).send({message:error.message});
     }
 }
-exports.deleteArticle = async(req,res)=>{
+
+exports.deleteArticle= async (req, res) => {
     try {
-        
-        const article =await Article.findOne({_id:req.params.id})
-    //     if(!article){
-    //        res.send('blog not found')
-    //    }
-       res.send({
-           message:'deleted successful',
-        article:article})
+        const article = await Article.findOne({ _id: req.params.id, owner: req.user._id })
+        if (!article) {
+            res.send('article not found')
+        }
+     
+        await Article.deleteOne({ _id: req.params.id, owner: req.user._id })
+        res.send({
+            message: " article deleted successful",
+            article: article
+        })
     } catch (error) {
         res.status(404).send(error.message)
     }
@@ -75,7 +78,7 @@ exports.updateArticle = async(req,res)=>{
       _id:req.params.id,
       title: req.body.title,
       summary:req.body.summary,
-      content:req.body.content
+      contents:req.body.contents
   });
   Article.updateOne({_id:req.params.id},article).then(()=>{
        res.status(201).send({

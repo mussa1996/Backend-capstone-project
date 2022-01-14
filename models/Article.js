@@ -22,12 +22,16 @@ const articlesSchema = new mongoose.Schema({
         maxlength: 1000
 
     },
-    content: {
+    contents: {
         type: String,
         required: true,
         trim: true,
         minlength: 1,
         maxlength: 1000
+    },
+    owner:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true
     },
     date: {
         type: Date,

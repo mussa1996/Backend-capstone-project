@@ -16,9 +16,7 @@ const articlesSchema = new mongoose.Schema({
     },
     picture: {
         type: String,
-        required: true,
-        trim: true,
-        minlength: 1,
+        required: false,
         maxlength: 1000
 
     },

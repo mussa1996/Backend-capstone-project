@@ -2,10 +2,11 @@ const mongoose = require('mongoose');
 const Article = require('../models/Article')
 const Comment=require('../models/Comment')
 exports.postArticle =async(req,res,next) =>{
+    let picture=req.file?.filename;
                 const article = new Article({ 
                     title:req.body.title,
                     summary:req.body.summary,
-                    picture:req.file.filename,
+                    picture:picture || '',
                     contents:req.body.contents,
                     owner:req.user._id
                 })

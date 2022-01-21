@@ -4,7 +4,7 @@ const Comments = require('../models/Comment')
 exports.addComment = async(req,res)=>{
     try {
         const data = (req.body)
-        const comment = new Comments({...data, Article:req.params.id})
+        const comment = new Comments({...data, Article:req.query.id})
 
         await comment.save()
         res.status(200).send(comment)
@@ -15,6 +15,6 @@ exports.addComment = async(req,res)=>{
 
 exports.getComments = async(req,res)=>{
     
-        const comments = await Comments.findOne({Article:req.params.id})
+        const comments = await Comments.findOne({Article:req.query.id})
         res.status(200).send(comments)
 }

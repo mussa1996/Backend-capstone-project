@@ -10,7 +10,7 @@ app.use(function (res, req, next) {
     req.header("Access-control-Allow-Origin", "*");
     req.header("Access-control-Allow-Headers", "Origin,x-Requested-with, Content-Type, Accept,Authorization");
     if (req.method === 'OPTIONS') {
-        req.header('Access-control-Allow-Methods', 'PUT', 'POST', 'GET', 'DELETE');
+        req.header('Access-control-Allow-Methods', 'PATCH', 'POST', 'GET', 'DELETE');
     }
     next();
 }) 
@@ -23,7 +23,7 @@ app.listen(port, () => {
     console.log('Server is running on port: ' + port);
 }
 );
-app.use ('/api',routes);
+app.use ('/api/v2',routes);
 
 app.get('/', (req, res) => {
     res.send('Welcome to my capstone project');

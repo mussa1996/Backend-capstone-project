@@ -16,10 +16,10 @@ describe('contact API TEST', () => {
     
             it('it should send message', (done) => {
                 const res = chai.request(app)
-                .post('/api/contact/send')
+                .post('/api/v2/contacts/send')
                 .send({name:"mussa", email:"mussa@example.com",subject:"testing",message:"hi mussa"})
                 .end((err,res)=>{
-                    res.should.have.status(200)
+                    res.should.have.status(201)
                     done()
                 })
                 
@@ -28,19 +28,19 @@ describe('contact API TEST', () => {
             // Get all messages
             it('it should GET all the messages', (done) => {
                 const res = chai.request(app)
-                .get('/api/contact/list')
+                .get('/api/v2/contacts/list')
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(201);
                     res.body.should.be.a('array');
                 done();
               });
             })
             it('it should not send message without email or name', (done) => {
                 const res = chai.request(app)
-                .post('/api/contact/send')
+                .post('/api/v2/contacts/send')
                 .send({email:"abc@example.com",subject:"testing",message:"hi mussa"})
                 .end((err, res) => {
-                                res.should.have.status(400);
+                                res.should.have.status(404);
                                 res.body.should.be.a('object');
                                 res.body.should.have.property('message');
                                 res.body.message.should.be.eql('contact validation failed: name: Path `name` is required.');

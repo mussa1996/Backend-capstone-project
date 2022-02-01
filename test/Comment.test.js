@@ -16,10 +16,10 @@ describe('COMMENT API TEST', () => {
     describe('CRD Comment', () => {
             it('it should CREATE a comment', (done) => {
                 const res = chai.request(app)
-                .post('/api/comments/comment?id='+testId1)
+                .post('/api/v2/comments/comment?id='+testId1)
                 .send({full:"mussa", comment:"testing comments",testId1})
                 .end((err,res)=>{
-                    res.should.have.status(200)
+                    res.should.have.status(201)
                     res.body.should.be.a('object');
                     done()
                 })
@@ -27,10 +27,10 @@ describe('COMMENT API TEST', () => {
             });
             it('it should not send a comment without comment message', (done) => {
                 const res = chai.request(app)
-                .post('/api/comments/comment?id='+testId1)
+                .post('/api/v2/comments/comment?id='+testId1)
                 .send({full:"mussa"})
                 .end((err,res)=>{
-                    res.should.have.status(400)
+                    res.should.have.status(404)
                     done()
                 })
                 
@@ -39,9 +39,9 @@ describe('COMMENT API TEST', () => {
             // Get all comments
             it('it should GET all the comments', (done) => {
                 const res = chai.request(app)
-                .get('/api/comments/comment?=id'+testId1)
+                .get('/api/v2/comments/comment?=id'+testId1)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(201);
                     res.body.should.be.a('object');
                 done();
               });

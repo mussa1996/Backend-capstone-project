@@ -6,7 +6,7 @@ const commentRoutes = require('./Comment')
 const contactRoutes = require('./Contact')
 
 router.use('/articles',articleRoutes)
-router.use('/user',userRoutes)
+router.use('/users',userRoutes)
 router.use('/comments',commentRoutes)
-router.use('/contact',contactRoutes)
+router.use('/contacts',contactRoutes)
 module.exports=router;

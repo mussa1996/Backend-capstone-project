@@ -7,14 +7,24 @@ exports.addComment = async(req,res)=>{
         const comment = new Comments({...data, Article:req.query.id})
 
         await comment.save()
-        res.status(200).send(comment)
+        res.status(201).send({
+            message:'comment added successfully',
+            comment
+        })
     } catch (error) {
-        res.status(400).send(error.message)
+        res.status(404).send(error.message)
     }
 }
 
 exports.getComments = async(req,res)=>{
     
+      try {
         const comments = await Comments.findOne({Article:req.query.id})
-        res.status(200).send(comments)
+        res.status(201).send({
+            message:'operation successful',
+            comments
+        })
+      } catch (error) {
+          res.status(404).send(error.message)
+      }
 }

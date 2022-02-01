@@ -10,13 +10,13 @@ exports.createUser = async(req,res)=>{
     try {
        const data = await user.save()
     //    const token = await user.generateAuthToken()
-       res.send({
+       res.status(201).send({
            message:"created successfully",
            user: data,
         //    token:token
        })
     } catch (error) {
-        res.status(400).send(error.message)
+        res.status(404).send(error.message)
     }
 
 }
@@ -26,22 +26,76 @@ exports.loginUser = async(req,res)=>{
        const user = await User.findByCredentials(req.body.email, req.body.password)
        const token = await user.generateAuthToken()
 
-       res.send({user,token})
+       res.status(201).send({
+        message:'operation successful',
+           user})
    } catch (error) {
-       res.status(404).send({error:"invalid Email or password"})
+       res.status(404).send(
+           error.message
+       )
    }
 }
 
 exports.getUSer = async(req,res)=>{
-      res.send(req.user)
+    try {
+        const user = await User.findById(req.query.id)
+      res.status(201).send({
+            message:'operation successful',
+            user
+      })
+    } catch (error) {
+        
+        res.status(404).send(
+            error.message
+        )
+       
+    }
+}
+exports.getAllUser= async(req,res)=>{
+    try {
+        const users = await User.find({})
+    res.status(201).send({
+        message:'operation successful',
+        users
+    })
+    } catch (error) {
+        res.status(404).send(
+            error.message
+        )
+    }
 }
 
+
+exports.deleteUser =async (req,res)=>{
+    try{
+    await User.deleteOne({_id:req.query.id})
+    return res.status(201).json("delete successfully")
+    }catch(error){
+    return res.status(404).send(error.message)
+    }
+}
 exports.logout = async(req,res)=>{
-    
-        req.user.tokens = req.user.tokens.filter((token)=>{
-            return token.token !== req.token
+    try {
+        const {token}=req;
+        const userId=req.user._id.toString()
+        const users = await User.findOne({_id:userId})
+        .then(() => {
+            res.status(201).send({
+                message: 'logged out successfully',
+            })})
+            await User.findByIdAndUpdate(req.user._id,{token:null})
+        .catch((error) => {
+            return res.status(400).json({
+                error: error,
+                
+            });
         })
-        await req.user.save()
-        res.send({message:'logged out'})
-   
+        if(users.token !== token){
+          return  res.status(404).send({
+            message: 'Token not found',
+        })
+        }
+    } catch (error) {
+        return res.status(500).send()
+    }
 }

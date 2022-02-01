@@ -8,8 +8,6 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
         trim:true,
-        minlength:3,
-        maxlength:20,
         unique:true
     },
     email:{
@@ -28,21 +26,17 @@ const userSchema = new mongoose.Schema({
         required:true,
         minlength:8
     },
-    tokens:[{
-        token:{
-            type:String,
-            required:true
-        }
-    }]
+    token: {
+        type: String,
+      },
 })
 //generating auth token
 userSchema.methods.generateAuthToken = async function(){
     const user = this
-    const token = jwt.sign({_id:user._id.toString()}, "mynameismussaisworkingoncapstoneproject")
-
-    user.tokens = user.tokens.concat({ token })
-    await user.save()
-    return token
+    const token = jwt.sign({_id:user._id.toString()}, process.env.MY_SECRET)
+    user.token = token
+    await user.save();
+    return token;
 }
 userSchema.statics.findByCredentials = async(email,password)=>{
     const user = await User.findOne({email})

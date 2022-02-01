@@ -6,7 +6,7 @@ exports.postArticle =async(req,res,next) =>{
                 const article = new Article({ 
                     title:req.body.title,
                     summary:req.body.summary,
-                    picture:picture || '',
+                    picture:req.body.picture,
                     contents:req.body.contents,
                     owner:req.user._id
                 })
@@ -85,7 +85,7 @@ exports.updateArticle = async(req,res)=>{
   const article = new Article({
       _id:req.query.id,
       title: req.body.title,
-      picture:picture || '',
+      picture:req.body.picture,
       summary:req.body.summary,
       contents:req.body.contents
   });

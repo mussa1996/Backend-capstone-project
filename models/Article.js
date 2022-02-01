@@ -16,8 +16,10 @@ const articlesSchema = new mongoose.Schema({
     },
     picture: {
         type: String,
-        required: false,
-        maxlength: 1000
+        required: false
+
+        
+
 
     },
     contents: {
